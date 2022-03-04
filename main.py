@@ -12,7 +12,18 @@ params = data.get_calibration_details()
 proj = astyx_projection(params)
 
 lidar_pc = data.get_lidar("000100")
-print(lidar_pc.shape)
+
+print("========================experiment space========================")
+print("lidar_pc.shape: ", lidar_pc.shape)
+lidar_xyz = lidar_pc[:,:3]
+print("lidar_xyz.shape: ", lidar_xyz.shape)
+lidar_x = lidar_xyz[:,0]
+lidar_y = lidar_xyz[:,1]
+lidar_z = lidar_xyz[:,2]
+plt.scatter(lidar_x, lidar_y, lidar_z)
+plt.savefig("lidar_xyz.png")
+print("========================experiment space========================")
+
 lidar_image = proj.lidar2CameraAstyx(lidar_pc[:,:3])
 dist = np.linalg.norm(lidar_pc[:,:3],axis=1)
 print("dist.max(): ", dist.max())
@@ -25,11 +36,7 @@ print("max dim 1: ", lidar_image[:,1].max())
 print("max dim 0: ", lidar_image[:,0].max())
 
 ####
-print("========================experiment space========================")
-print("lidar_pc.shape: ", lidar_pc.shape)
-lidar_xyz = lidar_pc[:3]
 
-print("========================experiment space========================")
 ####
 
 
@@ -46,4 +53,4 @@ print(dist.shape)
 # lidar_img = np.zeros()
 
 plt.imshow(img)
-plt.show()
+plt.savefig('result.png')
