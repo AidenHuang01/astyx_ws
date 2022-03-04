@@ -20,7 +20,12 @@ print("lidar_xyz.shape: ", lidar_xyz.shape)
 lidar_x = lidar_xyz[:,0]
 lidar_y = lidar_xyz[:,1]
 lidar_z = lidar_xyz[:,2]
-plt.scatter(lidar_x, lidar_y, lidar_z)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+plt.scatter(lidar_x, lidar_y, lidar_z,c='r', marker='o')
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.set_zlabel('Z Label')
 plt.savefig("lidar_xyz.png")
 print("========================experiment space========================")
 
@@ -52,5 +57,5 @@ print(dist.shape)
 # pdb.set_trace()
 # lidar_img = np.zeros()
 
-plt.imshow(img)
+#plt.imshow(img)
 plt.savefig('result.png')
