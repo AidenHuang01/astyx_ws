@@ -3,15 +3,18 @@ import astyx_utils
 from astyx_utils import *
 import matplotlib.pyplot as plt
 import pdb
+from PIL import Image
 
 data = Astyx_Data()
-img = data.get_camera("000100")
+
+
+img = data.get_camera("000300")
 
 params = data.get_calibration_details()
 
 proj = astyx_projection(params)
 
-lidar_pc = data.get_lidar("000100")
+lidar_pc = data.get_lidar("000300")
 
 print("========================experiment space========================")
 # print("lidar_pc.shape: ", lidar_pc.shape)
@@ -40,7 +43,7 @@ dist = np.linalg.norm(lidar_pc[:,:3],axis=1)
 print("dist.max(): ", dist.max())
 lidar_image = lidar_image.astype(int)
 print(lidar_image.shape)
-img = np.zeros([img.shape[0], img.shape[1], 1])
+img = np.zeros((img.shape[0], img.shape[1], 3))
 print("img.shape: ", img.shape)
 print("lidar_image.shape: ", lidar_image.shape)
 
@@ -52,13 +55,14 @@ print("max dim 0: ", lidar_image[:,0].max())
 ####
 
 
-radius = 40
+radius = 60
 
 for i in range(lidar_image.shape[0]):
     if lidar_image[i,1] < img.shape[0]-radius and lidar_image[i,0] < img.shape[1]-radius and lidar_image[i,1] >= radius and lidar_image[i,0] >= radius:
         img[lidar_image[i,1]-radius : lidar_image[i,1]+radius+1,
         lidar_image[i,0]-radius : lidar_image[i,0]+radius+1,
-        :] = dist[i]
+        :] = (dist.max() - dist[i])/dist.max()*0.5
+plt.imsave('img.png', img)
 print(dist.shape)
 # empty[lidar_image[0,1],lidar_image[0,0],:] = 255
 # pdb.set_trace()
